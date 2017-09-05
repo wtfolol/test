@@ -1,51 +1,24 @@
-// Import the mssql package
-var sql = require("mssql");
+var restify = require('restify');
+var builder = require('botbuilder');
 
-// Create a configuration object for our Azure SQL connection parameters
-var dbConfig = {
- server: "botframedata.database.windows.net", // Use your SQL server name
- database: "botframe_data", // Database to connect to
- user: "xiaows", // Use your username
- password: "BOT@ws00", // Use your password
- port: 1433,
- // Since we're on Windows Azure, we need to set the following options
- options: {
-       encrypt: true
-   }
+// Get secrets from server environment
+var botConnectorOptions = { 
+    appId: process.env.BOTFRAMEWORK_APPID, 
+    appPassword: process.env.BOTFRAMEWORK_APPSECRET
 };
 
-// This function connects to a SQL server, executes a SELECT statement,
-// and displays the results in the console.
-function getCustomers() {
- // Create connection instance
- var conn = new sql.Connection(dbConfig);
+// Create bot
+var connector = new builder.ChatConnector(botConnectorOptions);
+var bot = new builder.UniversalBot(connector);
 
- conn.connect()
- // Successfull connection
- .then(function () {
+bot.dialog('/', function (session) {
+    
+    //respond with user's message
+    session.send("You said " + session.message.text);
+});
 
-   // Create request instance, passing in connection instance
-   var req = new sql.Request(conn);
+// Setup Restify Server
+var server = restify.createServer();
 
-   // Call mssql's query method passing in params
-   req.query("SELECT * FROM [Table]")
-   .then(function (recordset) {
-     console.log(recordset);
-     conn.close();
-   })
-   // Handle sql statement execution errors
-   .catch(function (err) {
-     console.log(err);
-     conn.close();
-   })
-
- })
- // Handle connection errors
- .catch(function (err) {
-   console.log(err);
-   conn.close();
- });
-}
-
-
-getCustomers();
+// Handle Bot Framework messages
+server.post('/api/messages', connector.listen());
