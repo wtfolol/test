@@ -34,13 +34,13 @@ bot.dialog('greetings', [
 
 bot.dialog('help', function (session, args, next) {
     //Send a help message
-    session.endDialog("Global help menu.<br> Type /help for any help <br> Type /order for order");
+    session.endDialog("Global help menu.<br> Type -help for any help <br> Type -order for order");
 })
 
 // Once triggered, will start a new dialog as specified by
 // the 'onSelectAction' option.
 .triggerAction({
-    matches: /^/help$/i,
+    matches: /^-help$/i,
     onSelectAction: (session, args, next) => {
         // Add the help dialog to the top of the dialog stack 
         // (override the default behavior of replacing the stack)
@@ -50,13 +50,13 @@ bot.dialog('help', function (session, args, next) {
 
 bot.dialog('order', function (session, args, next) {
     //Send a help message
-    session.endDialog("Global help menu.<br> Type /help for any help <br> Type /order for order");
+    session.endDialog("Your order is blah blah blah");
 })
 
 // Once triggered, will start a new dialog as specified by
 // the 'onSelectAction' option.
 .triggerAction({
-    matches: /^/order$/i,
+    matches: /^-order$/i,
     onSelectAction: (session, args, next) => {
         // Add the help dialog to the top of the dialog stack 
         // (override the default behavior of replacing the stack)
