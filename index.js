@@ -1,6 +1,8 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 
+hello bitches!!
+
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
